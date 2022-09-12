@@ -15,10 +15,10 @@ This bot detects when a forta agent is deployed by Nethermind address
   - Severity is always set to "info"
   - Type is always set to "info"
   - Metadata:
-  - metadata: bot metadata ipfs hash
-  - agentId: id of the deployed agent
-  - owner: deployer bot
-  - chainIds: supported chains
+    - `metadata`: bot metadata ipfs hash
+    - `agentId`: id of the deployed agent
+    - `owner`: deployer bot
+    - `chainIds`: supported chains
 
 ## Test Data
 
