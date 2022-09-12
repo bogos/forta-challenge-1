@@ -1,17 +1,13 @@
-import {
-  Finding,
-  FindingSeverity,
-  FindingType,
-  HandleTransaction,
-} from "forta-agent";
+import { Finding, FindingSeverity, FindingType, HandleTransaction } from "forta-agent";
 import { TestTransactionEvent } from "forta-agent-tools/lib/tests";
 import {
   CREATE_AGENT_METHOD,
   DEPLOYER_ADDRESS,
   FORTA_PROXY_AGENT_REGISTRTY_CORE,
+  handlerInputs,
+  providerHandleTransaction,
 } from "./agent";
 import { Interface } from "ethers/lib/utils";
-import agent from "./agent";
 import { BigNumber } from "ethers";
 
 const FAKE_DATA = {
@@ -26,7 +22,7 @@ describe("New Forta Agent deployment", () => {
   let fortaProxy = new Interface([CREATE_AGENT_METHOD]);
 
   beforeAll(() => {
-    handleTransaction = agent.handleTransaction;
+    handleTransaction = providerHandleTransaction(handlerInputs);
   });
 
   it("returns empty findings if the deployer address not create a new agent", async () => {
