@@ -1,7 +1,7 @@
 {
   "name": "forta-challenge-bot-detector",
   "version": "0.0.1",
-  "description": "Forta bot who detects a new agent deployment from a nethermind address",
+  "description": "Forta bot who detects a new bot deployment from a nethermind address",
   "repository": "https://github.com/bogos/forta-challenge-1",
   "chainIds": [
     137
