@@ -1,12 +1,6 @@
 import { Finding, FindingSeverity, FindingType, HandleTransaction } from "forta-agent";
 import { TestTransactionEvent, createAddress } from "forta-agent-tools/lib/tests";
-import {
-  CREATE_AGENT_METHOD,
-  DEPLOYER_ADDRESS,
-  FORTA_PROXY_AGENT_REGISTRY_CORE,
-  handlerInputs,
-  providerHandleTransaction,
-} from "./agent";
+import { CREATE_AGENT_METHOD, FORTA_PROXY_AGENT_REGISTRY_CORE, providerHandleTransaction } from "./agent";
 import { Interface } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
 
@@ -24,15 +18,21 @@ const FAKE_DATA_1 = {
   chainIds: [BigNumber.from("4444")],
 };
 
-describe("New Forta Agent deployment", () => {
+const mockHandlerInputs = {
+  DEPLOYER_ADDRESS: createAddress("0x3"),
+  FORTA_PROXY_AGENT_REGISTRY_CORE: createAddress("0x4"),
+  CREATE_AGENT_METHOD,
+};
+
+describe("New Forta Bot deployment", () => {
   let handleTransaction: HandleTransaction;
   let fortaProxy = new Interface([CREATE_AGENT_METHOD]);
 
   beforeAll(() => {
-    handleTransaction = providerHandleTransaction(handlerInputs);
+    handleTransaction = providerHandleTransaction(mockHandlerInputs);
   });
 
-  it("returns empty findings if the deployer address not create a new agent", async () => {
+  it("returns empty findings if the deployer address not create a new bot", async () => {
     const txEvent = new TestTransactionEvent();
     const findings = await handleTransaction(txEvent);
     expect(findings).toStrictEqual([]);
@@ -40,10 +40,10 @@ describe("New Forta Agent deployment", () => {
 
   it("returns findings if there is a bot deployment", async () => {
     const txEvent = new TestTransactionEvent()
-      .setFrom(DEPLOYER_ADDRESS)
-      .setTo(FORTA_PROXY_AGENT_REGISTRY_CORE)
+      .setFrom(mockHandlerInputs.DEPLOYER_ADDRESS)
+      .setTo(mockHandlerInputs.FORTA_PROXY_AGENT_REGISTRY_CORE)
       .addTraces({
-        to: FORTA_PROXY_AGENT_REGISTRY_CORE,
+        to: mockHandlerInputs.FORTA_PROXY_AGENT_REGISTRY_CORE,
         input: fortaProxy.encodeFunctionData("createAgent", [
           FAKE_DATA_0.agentId,
           FAKE_DATA_0.owner,
@@ -90,10 +90,10 @@ describe("New Forta Agent deployment", () => {
 
   it("multiple findings for multiple deployment by Nethermind", async () => {
     const txEvent = new TestTransactionEvent()
-      .setFrom(DEPLOYER_ADDRESS)
-      .setTo(FORTA_PROXY_AGENT_REGISTRY_CORE)
+      .setFrom(mockHandlerInputs.DEPLOYER_ADDRESS)
+      .setTo(mockHandlerInputs.FORTA_PROXY_AGENT_REGISTRY_CORE)
       .addTraces({
-        to: FORTA_PROXY_AGENT_REGISTRY_CORE,
+        to: mockHandlerInputs.FORTA_PROXY_AGENT_REGISTRY_CORE,
         input: fortaProxy.encodeFunctionData("createAgent", [
           FAKE_DATA_0.agentId,
           FAKE_DATA_0.owner,
@@ -102,7 +102,7 @@ describe("New Forta Agent deployment", () => {
         ]),
       })
       .addTraces({
-        to: FORTA_PROXY_AGENT_REGISTRY_CORE,
+        to: mockHandlerInputs.FORTA_PROXY_AGENT_REGISTRY_CORE,
         input: fortaProxy.encodeFunctionData("createAgent", [
           FAKE_DATA_1.agentId,
           FAKE_DATA_1.owner,
